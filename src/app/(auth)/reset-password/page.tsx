@@ -1,6 +1,6 @@
 "use client";
 
-import { loginAction } from "@/actions/auth";
+import { resetPasswordAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,19 +11,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GraduationCap, Loader2 } from "lucide-react";
-import Link from "next/link";
+import { KeyRound, Loader2 } from "lucide-react";
 import { useActionState } from "react";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 
-function LoginForm() {
-  const searchParams = useSearchParams();
-  const resetSuccess = searchParams.get("message") === "password_reset_success";
-
+export default function ResetPasswordPage() {
   const [state, formAction, isPending] = useActionState(
     async (_prevState: { error: string } | null, formData: FormData) => {
-      const result = await loginAction(formData);
+      const result = await resetPasswordAction(formData);
       return result ?? null;
     },
     null
@@ -33,55 +27,44 @@ function LoginForm() {
     <Card>
       <CardHeader className="text-center">
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-800">
-          <GraduationCap className="h-6 w-6 text-white" />
+          <KeyRound className="h-6 w-6 text-white" />
         </div>
         <CardTitle className="text-2xl font-bold text-slate-800">
-          Welcome back
+          Reset your password
         </CardTitle>
         <CardDescription className="text-slate-500">
-          Sign in to your learning account
+          Choose a new secure password for your account
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="space-y-4">
-          {resetSuccess && (
-            <div className="rounded-md bg-green-50 p-3 text-sm text-green-700">
-              Password reset successfully. Please sign in with your new password.
-            </div>
-          )}
           {state?.error && (
             <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">
               {state.error}
             </div>
           )}
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="you@example.com"
-              required
-              autoComplete="email"
-            />
-          </div>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
-              <Link
-                href="/forgot-password"
-                className="text-xs text-slate-500 hover:text-slate-800"
-              >
-                Forgot password?
-              </Link>
-            </div>
+            <Label htmlFor="password">New Password</Label>
             <Input
               id="password"
               name="password"
               type="password"
-              placeholder="••••••••"
+              placeholder="Min. 8 characters"
               required
-              autoComplete="current-password"
+              minLength={8}
+              autoComplete="new-password"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="Re-enter password"
+              required
+              minLength={8}
+              autoComplete="new-password"
             />
           </div>
           <Button
@@ -92,22 +75,14 @@ function LoginForm() {
             {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
+                Updating password...
               </>
             ) : (
-              "Sign In"
+              "Reset Password"
             )}
           </Button>
         </form>
       </CardContent>
     </Card>
-  );
-}
-
-export default function LoginPage() {
-  return (
-    <Suspense>
-      <LoginForm />
-    </Suspense>
   );
 }

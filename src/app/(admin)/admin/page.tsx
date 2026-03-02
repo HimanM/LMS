@@ -1,5 +1,6 @@
 import { getCoursesAction } from "@/actions/courses";
 import { CreateCourseDialog } from "./_components/create-course-dialog";
+import { DeleteCourseButton } from "./_components/delete-course-button";
 import { CourseCard } from "@/components/features/course-card";
 import { BookOpen } from "lucide-react";
 
@@ -31,15 +32,22 @@ export default async function AdminCoursesPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
-            <CourseCard
-              key={course.id}
-              id={course.id}
-              title={course.title}
-              description={course.description}
-              videoCount={course._count.videos}
-              isActive={course.isActive}
-              href={`/admin/courses/${course.id}`}
-            />
+            <div key={course.id} className="flex flex-col">
+              <CourseCard
+                id={course.id}
+                title={course.title}
+                description={course.description}
+                videoCount={course._count.videos}
+                isActive={course.isActive}
+                href={`/admin/courses/${course.id}`}
+              />
+              <div className="flex justify-end -mt-1 pr-1">
+                <DeleteCourseButton
+                  courseId={course.id}
+                  courseTitle={course.title}
+                />
+              </div>
+            </div>
           ))}
         </div>
       )}

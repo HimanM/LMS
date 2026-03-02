@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogoutButton } from "@/components/features/logout-button";
+import { UserMenu } from "@/components/features/user-menu";
 import { GraduationCap, BookOpen, Users, Video } from "lucide-react";
 
 export default function AdminLayout({
@@ -43,7 +43,7 @@ export default function AdminLayout({
               </Link>
             </nav>
           </div>
-          <LogoutButton />
+          <UserMenu />
         </div>
       </header>
 
