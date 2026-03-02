@@ -1,4 +1,5 @@
 import { PrismaClient, Role } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { createClient } from "@supabase/supabase-js";
 import "dotenv/config";
 
@@ -80,9 +81,8 @@ const SAMPLE_COURSES = [
 // Seed Script
 // ─────────────────────────────────────────────────────────────
 
-const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL,
-} as any);
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const prisma = new PrismaClient({ adapter });
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,

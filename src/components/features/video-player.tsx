@@ -23,11 +23,9 @@ export function VideoPlayer({ youtubeUrl, title }: VideoPlayerProps) {
       <iframe
         src={embedUrl}
         title={title}
-        sandbox="allow-scripts allow-same-origin allow-presentation"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
         className="h-full w-full"
-        referrerPolicy="no-referrer"
       />
     </div>
   );

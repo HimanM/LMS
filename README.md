@@ -120,7 +120,7 @@ src/
 | Dashboard Label            | `.env` Variable                |
 | -------------------------- | ------------------------------ |
 | **Project URL**            | `NEXT_PUBLIC_SUPABASE_URL`     |
-| **anon / public** key      | `NEXT_PUBLIC_SUPABASE_ANON_KEY`|
+| **Publishable Key**        | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` |
 | **service_role / secret** key | `SUPABASE_SERVICE_ROLE_KEY`  |
 
 > ⚠️ The **service_role** key bypasses Row Level Security. Never expose it to the browser — it's only used server-side.
@@ -207,7 +207,7 @@ Create a `.env` file at the project root (see `.env.example`):
 ```bash
 # ─── Supabase ───────────────────────────────────────
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your-publishable-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key   # Server-only, never exposed to client
 
 # ─── Database (Prisma) ──────────────────────────────
@@ -227,7 +227,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 | Variable                        | Exposed to Client | Where to Find It                                 |
 | ------------------------------- | ----------------- | ------------------------------------------------ |
 | `NEXT_PUBLIC_SUPABASE_URL`      | ✅                | Supabase → Settings → API → Project URL          |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅                | Supabase → Settings → API → anon public          |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` | ✅  | Supabase → Settings → API → Publishable Key      |
 | `SUPABASE_SERVICE_ROLE_KEY`     | ❌                | Supabase → Settings → API → service_role secret  |
 | `DATABASE_URL`                  | ❌                | Supabase → Settings → Database → Connection string (port 6543) |
 | `DIRECT_URL`                    | ❌                | Supabase → Settings → Database → Connection string (port 5432) |
