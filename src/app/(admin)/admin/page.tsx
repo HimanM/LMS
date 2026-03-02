@@ -1,5 +1,6 @@
 import { getCoursesAction } from "@/actions/courses";
 import { CreateCourseDialog } from "./_components/create-course-dialog";
+import { DeleteCourseButton } from "./_components/delete-course-button";
 import { CourseCard } from "@/components/features/course-card";
 import { BookOpen } from "lucide-react";
 
@@ -39,6 +40,12 @@ export default async function AdminCoursesPage() {
               videoCount={course._count.videos}
               isActive={course.isActive}
               href={`/admin/courses/${course.id}`}
+              actions={
+                <DeleteCourseButton
+                  courseId={course.id}
+                  courseTitle={course.title}
+                />
+              }
             />
           ))}
         </div>

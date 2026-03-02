@@ -1,5 +1,6 @@
 import { getStudentsAction } from "@/actions/students";
 import { InviteStudentForm } from "./_components/invite-student-form";
+import { StudentActions } from "./_components/student-actions";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -65,6 +66,7 @@ export default async function AdminStudentsPage() {
                   <TableHead>Status</TableHead>
                   <TableHead>Enrollments</TableHead>
                   <TableHead>Joined</TableHead>
+                  <TableHead className="w-24 text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -94,6 +96,13 @@ export default async function AdminStudentsPage() {
                     </TableCell>
                     <TableCell className="text-sm text-slate-500">
                       {new Date(student.createdAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <StudentActions
+                        studentId={student.id}
+                        email={student.email}
+                        requiresPasswordChange={student.requiresPasswordChange}
+                      />
                     </TableCell>
                   </TableRow>
                 ))}

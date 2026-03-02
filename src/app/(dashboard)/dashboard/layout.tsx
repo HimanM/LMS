@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogoutButton } from "@/components/features/logout-button";
+import { UserMenu } from "@/components/features/user-menu";
 import { GraduationCap } from "lucide-react";
 
 export default function DashboardLayout({
@@ -18,7 +18,7 @@ export default function DashboardLayout({
             </div>
             <span className="text-lg font-bold text-slate-800">LMS</span>
           </Link>
-          <LogoutButton />
+          <UserMenu />
         </div>
       </header>
 

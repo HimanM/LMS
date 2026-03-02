@@ -20,6 +20,7 @@ import { AddVideoDialog } from "./_components/add-video-dialog";
 import { EnrollStudentDialog } from "./_components/enroll-student-dialog";
 import { DeleteVideoButton } from "./_components/delete-video-button";
 import { UnenrollButton } from "./_components/unenroll-button";
+import { DeleteCourseButton } from "../../_components/delete-course-button";
 import { ArrowLeft, Video, Users } from "lucide-react";
 import Link from "next/link";
 
@@ -63,6 +64,11 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
               {course.isActive ? "Active" : "Inactive"}
             </Badge>
           </div>
+          <DeleteCourseButton
+            courseId={course.id}
+            courseTitle={course.title}
+            redirectAfter
+          />
         </div>
       </div>
 
@@ -107,7 +113,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
                       {video.youtubeUrl}
                     </TableCell>
                     <TableCell className="text-right">
-                      <DeleteVideoButton videoId={video.id} />
+                      <DeleteVideoButton videoId={video.id} videoTitle={video.title} />
                     </TableCell>
                   </TableRow>
                 ))}

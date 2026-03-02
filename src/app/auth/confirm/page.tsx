@@ -49,11 +49,20 @@ export default function AuthConfirmPage() {
       }
 
       if (!data.session) {
-        setError("Unable to verify the invite link. It may have expired.");
+        setError("Unable to verify the link. It may have expired.");
         return;
       }
 
-      // Redirect based on user metadata
+      // Check the link type from the hash fragment
+      const type = params.get("type"); // "invite" | "recovery" | etc.
+
+      if (type === "recovery") {
+        // Password reset flow → send to reset-password page
+        router.replace("/reset-password");
+        return;
+      }
+
+      // Invite flow → redirect based on user metadata
       const metadata = data.session.user.user_metadata;
       const requiresPasswordChange = metadata?.requiresPasswordChange ?? false;
       if (requiresPasswordChange) {
