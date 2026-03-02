@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+model User {
+  id                     String         @id @default(cuid())
+  email                  String         @unique
+  role                   Role           @default(STUDENT)
+  requiresPasswordChange Boolean        @default(true)
+  createdAt              DateTime       @default(now())
+  enrollments            Enrollment[]
+  progress               UserProgress[]
+
+  @@index([email])
+}
+
+model Course {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  videos      Video[]
+  enrollments Enrollment[]
+
+  @@index([isActive])
+}
+
+model Video {
+  id         String         @id @default(cuid())
+  title      String
+  youtubeUrl String
+  sequence   Int
+  courseId    String
+  course     Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  progress   UserProgress[]
+
+  @@unique([courseId, sequence])
+  @@index([courseId])
+  @@index([courseId, sequence])
+}
+
+model Enrollment {
+  id       String @id @default(cuid())
+  userId   String
+  courseId  String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
+}
+
+model UserProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  videoId     String
+  isCompleted Boolean   @default(false)
+  completedAt DateTime?
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  video       Video     @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, videoId])
+  @@index([userId])
+  @@index([videoId])
+  @@index([userId, isCompleted])
+}
