@@ -13,7 +13,7 @@ export function InviteStudentForm() {
 
   const [state, formAction, isPending] = useActionState(
     async (
-      _prevState: { error?: string; success?: boolean } | null,
+      _prevState: { error?: string; success?: boolean; warning?: string } | null,
       formData: FormData
     ) => {
       const result = await inviteStudentAction(formData);
@@ -23,7 +23,10 @@ export function InviteStudentForm() {
   );
 
   useEffect(() => {
-    if (state?.success) {
+    if (state?.success && state?.warning) {
+      toast.warning(state.warning);
+      formRef.current?.reset();
+    } else if (state?.success) {
       toast.success("Invitation sent successfully!");
       formRef.current?.reset();
     }

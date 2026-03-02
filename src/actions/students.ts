@@ -41,7 +41,7 @@ export async function inviteStudentAction(formData: FormData) {
             role: "STUDENT",
             requiresPasswordChange: true,
           },
-          redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/set-password`,
+          redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/confirm`,
         },
       });
 
@@ -64,16 +64,31 @@ export async function inviteStudentAction(formData: FormData) {
       inviteData.properties?.action_link ??
       `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`;
 
-    await resend.emails.send({
+    const { error: emailError } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL!,
       to: email,
       subject: "Welcome to the Learning Management System",
       react: WelcomeEmail({ inviteLink, email }),
     });
 
+    if (emailError) {
+      console.error("[invite] Email send failed:", emailError);
+      // User was created successfully — return partial success so the
+      // admin can resend the invite later instead of a confusing error.
+      revalidatePath("/admin");
+      return {
+        success: true,
+        warning:
+          "Student account created, but the welcome email could not be sent. " +
+          "Check your Resend configuration (onboarding@resend.dev can only " +
+          "deliver to your own Resend account email).",
+      };
+    }
+
     revalidatePath("/admin");
     return { success: true };
-  } catch {
+  } catch (err) {
+    console.error("[invite] Unexpected error:", err);
     return { error: "Failed to invite student" };
   }
 }

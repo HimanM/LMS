@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
+/**
+ * Handles the PKCE code-exchange flow (Supabase sends ?code=...).
+ * Invite / magic-link flows use hash fragments (#access_token=...),
+ * which never reach the server — those are handled by the client-side
+ * confirm page at /auth/confirm.
+ */
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
@@ -22,6 +28,10 @@ export async function GET(request: Request) {
     }
   }
 
-  // Something went wrong — redirect to login with error
-  return NextResponse.redirect(`${origin}/login?error=auth_callback_failed`);
+  // No code param → might be a hash-fragment flow that reached the wrong
+  // endpoint. Redirect to the client-side confirm page, preserving the
+  // original query string so the hash stays intact on the browser side.
+  return NextResponse.redirect(
+    `${origin}/auth/confirm?${searchParams.toString()}`
+  );
 }

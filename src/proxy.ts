@@ -38,7 +38,7 @@ export async function proxy(request: NextRequest) {
 
   // ── Public paths ──────────────────────────────────────
   const isAuthPage = pathname.startsWith("/login") || pathname.startsWith("/set-password");
-  const isAuthCallback = pathname.startsWith("/auth/callback");
+  const isAuthCallback = pathname.startsWith("/auth/callback") || pathname.startsWith("/auth/confirm");
 
   // Allow auth callback to pass through always
   if (isAuthCallback) {
