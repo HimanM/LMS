@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -8,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BookOpen, CheckCircle2 } from "lucide-react";
+import type { ReactNode } from "react";
 
 interface CourseCardProps {
   id: string;
@@ -17,6 +20,7 @@ interface CourseCardProps {
   completedCount?: number;
   isActive?: boolean;
   href: string;
+  actions?: ReactNode;
 }
 
 export function CourseCard({
@@ -26,6 +30,7 @@ export function CourseCard({
   completedCount,
   isActive,
   href,
+  actions,
 }: CourseCardProps) {
   const progress =
     videoCount > 0 && completedCount !== undefined
@@ -53,16 +58,21 @@ export function CourseCard({
           )}
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-4 text-sm text-slate-500">
-            <span className="flex items-center gap-1.5">
-              <BookOpen className="h-4 w-4" />
-              {videoCount} video{videoCount !== 1 ? "s" : ""}
-            </span>
-            {progress !== null && (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4 text-sm text-slate-500">
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-4 w-4" />
-                {progress}% complete
+                <BookOpen className="h-4 w-4" />
+                {videoCount} video{videoCount !== 1 ? "s" : ""}
               </span>
+              {progress !== null && (
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-4 w-4" />
+                  {progress}% complete
+                </span>
+              )}
+            </div>
+            {actions && (
+              <div onClick={(e) => e.preventDefault()}>{actions}</div>
             )}
           </div>
           {progress !== null && (
